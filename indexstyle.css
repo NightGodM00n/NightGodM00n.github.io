@@ -68,3 +68,28 @@ footer {
 .contact-icons a:hover {
   color: #1da1f2;
 }
+
+.links {
+  display: flex;
+  flex-direction: column; /* モバイルは縦並びが基本 */
+  align-items: flex-start; /* 左寄せ */
+  gap: 12px; /* 要素間の余白 */
+  width: 100%;
+  max-width: 320px; /* 必要に応じて調整 */
+  margin: 0 auto; /* 中央寄せ */
+}
+
+.links a img {
+  height: 40px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .links {
+    flex-direction: row; /* タブレット以上は横並び */
+    align-items: center;
+    gap: 24px;
+  }
+}
