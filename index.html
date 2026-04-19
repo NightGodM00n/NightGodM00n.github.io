@@ -15,9 +15,14 @@
     </div>
     <h1>TADPOLUTION SOFT</h1>
     <p>個人で開発しているスマホゲーム一覧</p>
+    <nav class="view-switcher" aria-label="ページ切り替え">
+      <a href="#home" data-view-link="home">Games</a>
+      <a href="#tools" data-view-link="tools">Tools</a>
+    </nav>
   </header>
 
   <main>
+    <section id="home-panel" class="view-panel" data-view-panel="home">
     <div class="section-title">
       <h2>Games</h2>
     </div>
@@ -234,15 +239,86 @@
       </div>
 
     </section>
+    </section>
+
+    <section id="tools-panel" class="view-panel" data-view-panel="tools" hidden>
+      <div class="section-title">
+        <h2>Tools</h2>
+      </div>
+      <div class="tools-intro">
+        <p>ここには今後、配布物や小さなユーティリティを並べていきます。上の `Games` / `Tools` で URL ハッシュ切り替えできます。</p>
+      </div>
+      <section class="tool-list">
+        <div class="game-card">
+          <span class="badge badge-game">Tool</span>
+          <h2>不動産収益シミュレーター</h2>
+          <p>物件情報から不動産投資の収益性をすぐに確認できるシンプルなアプリです。<br>
+             物件価格、月額家賃、金利、ローン年数、月額経費などを入力するだけで、表面利回り、実質利回り、月次キャッシュフロー、返済後CFをその場で自動計算します。<br>
+             詳細入力では、自己資金、管理費、修繕積立費、固定資産税、その他経費も反映可能。固定資産税は「自動推定」ボタンで簡単に補助入力できます。</p>
+          <div class="links">
+            <a href="https://play.google.com/store/apps/details?id=com.Tadpolutionsoft.RealEstateCalculators" target="_blank">
+              <img src="./Google_Play_Badge_JA.svg" alt="Google Playで手に入れよう">
+            </a>
+            <a href="https://apps.apple.com/jp/app/id6762031150" target="_blank">
+              <img src="./App-store-apple-logo.svg" alt="App Storeからダウンロード">
+            </a>
+            <a href="https://nightgodm00n.github.io/RealEstateCalculators.html" target="_blank">プライバシーポリシー</a>
+            <a href="https://nightgodm00n.github.io/RealEstateCalculatorsTerms.html" target="_blank">利用規約</a>
+          </div>
+        </div>
+      </section>
+    </section>
   </main>
 
   <footer>
     <p><a href="contact.html">お問い合わせはこちら</a></p>
     <div class="contact-icons">
-      <a href="https://twitter.com/your_twitter_id" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://x.com/tadpolutionsoft" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter"></i></a>
       <a href="mailto:aemulator.nn@gmail.com"><i class="fas fa-envelope"></i></a>
     </div>
   </footer>
+
+  <script>
+    (() => {
+      const views = new Set(['home', 'tools']);
+      const buttons = Array.from(document.querySelectorAll('[data-view-link]'));
+      const panels = Array.from(document.querySelectorAll('[data-view-panel]'));
+
+      const applyView = (rawView) => {
+        const view = views.has(rawView) ? rawView : 'home';
+
+        document.body.dataset.view = view;
+
+        panels.forEach((panel) => {
+          panel.hidden = panel.dataset.viewPanel !== view;
+        });
+
+        buttons.forEach((button) => {
+          const active = button.dataset.viewLink === view;
+          button.classList.toggle('is-active', active);
+          if (active) {
+            button.setAttribute('aria-current', 'page');
+          } else {
+            button.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      const syncFromHash = () => {
+        const hash = location.hash.replace(/^#/, '');
+        const view = views.has(hash) ? hash : 'home';
+
+        if (!hash || !views.has(hash)) {
+          history.replaceState(null, '', '#home');
+        }
+
+        applyView(view);
+      };
+
+      window.addEventListener('hashchange', syncFromHash);
+      syncFromHash();
+    })();
+  </script>
 
 </body>
 </html>
